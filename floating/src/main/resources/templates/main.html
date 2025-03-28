@@ -1,0 +1,120 @@
+<!DOCTYPE>
+<html xml:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>부유물탐지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <link th:href="@{/css/Main.css}" rel="stylesheet">
+</head>
+<body>
+<div>
+    <nav class="navbar">
+
+        <div class="navbar__logo">
+            <i class="fas fa-blog"></i>
+            <a th:href="@{/}">탐지체계</a>
+        </div>
+
+        <ul class="navbar__menu">
+            <li><a href="#">로그인</a></li>
+            <li><a href="#">공지사항</a></li>
+            <li><a href="#">고객센터</a></li>
+        </ul>
+
+    </nav>
+</div>
+<div class="Mainwrap">
+
+    <section class="mainlogwrap">
+       <form method="post" type="multipart/form/data" id="fileUploadForm">
+           <input type="text" name="message" id="message_input" value="me" hidden="hidden" />
+          <input type="file" name="file" id="file_name">
+        <button type="submit" class="btn btn-outline-success" style="min-width: 105px">비동기 요청</button>
+       </form>
+    </section>
+    <div class="MainLog">
+        <img id="streamVideo" width="640" />
+    </div>
+    <section>
+
+    </section>
+    <section class="Buttonwrap">
+        <a id="Gossip_2" th:href="@{/detection}">탐지된 객체</a>
+        <a id="Picton_2" th:href="@{/dstatistics}">탐지 통계</a>
+    </section>
+</div>
+<div class="Mainfooter">
+    <div class="footrtTop">
+        <p>2조: 내호승 이동희</p>
+    </div>
+    <div class="footrtdown">
+        <p>@ 탐지체계</p>
+    </div>
+</div>
+<script type="text/javascript">
+    document.getElementById("fileUploadForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const fileInput = document.getElementById("file_name");
+        const messageInput = document.getElementById("message_input");
+        const file = fileInput.files[0];
+
+        const button = this.querySelector("button[type=submit]");
+        button.disabled = true;
+
+        try {
+            const streamElement = document.getElementById("streamVideo");
+
+            if (file.type.startsWith("image/")) {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("message", messageInput.value);
+
+                const res = await fetch("http://localhost:8080/java_service", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await res.json();
+                streamElement.src = `data:image/jpeg;base64,${result.image}`;
+                streamElement.style.display = "block";
+                streamElement.setAttribute("width", "640");
+
+            } else if (file.type.startsWith("video/")) {
+                const formData = new FormData();
+                formData.append("file", file); // 🎯 message는 제거!
+
+                const res = await fetch("http://localhost:8000/upload_stream/", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const responseText = await res.text();
+
+                const img = document.createElement("img");
+                img.src = "http://localhost:8000" + responseText;
+                img.setAttribute("width", "640");
+                img.setAttribute("id", "streamVideo");
+                img.setAttribute("alt", "Streaming video");
+
+                streamElement.replaceWith(img);
+            }
+
+        } catch (err) {
+            console.error("업로드 실패:", err);
+            alert("업로드 중 오류 발생");
+        } finally {
+            button.disabled = false;
+        }
+    });
+
+</script>
+</body>
+</html>

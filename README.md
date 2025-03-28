@@ -3,8 +3,6 @@
 ## 목차
 
   - [개요](https://github.com/ehdgml123/FloationMatters#-개요)
-
-  - [팀원 소개](https://github.com/ehdgml123/FloationMatters#-개요)
   
   - [기술 스택](https://github.com/ehdgml123/FloationMatters#-기술-스택)
     

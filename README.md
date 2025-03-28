@@ -17,3 +17,11 @@
   - [개선사항](https://github.com/ehdgml123/Gigtalker#-개선사항)
 
 ## :green_book: 개요
+- 프로젝트 목표 : Roboflow 를 활용하여 부유물탐지 객체를 확인
+- 개발 기간 : 25/03/24 ~ 25/03/28
+
+## 🔧 기술 스택
+- Technology : `html`, `css`,`Thymeleaf`, `Js`, `Bootstrap`
+- Development Tool : `IntelliJ IDEA`, `PyCharm`
+- Development Environment : `Tomcat`,`Python`
+- model : `Roboflow`

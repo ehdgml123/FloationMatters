@@ -23,3 +23,6 @@
 - Development Tool : `IntelliJ IDEA`, `PyCharm`
 - Development Environment : `Tomcat`,`Python`
 - model : `Roboflow`
+
+## 👾 프로젝트 설계, 📂 PPT 📂
+ 프로젝트 설계, PPT
